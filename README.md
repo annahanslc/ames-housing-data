@@ -8,11 +8,16 @@ Ames is a charming, urban city in Iowa, home to Iowa State University. Located a
 
 The Ames City Assesor is responsible for assessing all real property at 100% of its market value. The market value is an estimate of the price that it would sell for on the open market. 
 
-The goal of this project is to generate a regression model that the Ames City Assesor can use to predict the market value of any home in Ames City. 
+The goal of this project is to generate a regression model that will allow the Ames City Assessor to predict the market value of any home in Ames City. 
 
 # Directory
 
-(-# About the Dataset-)
+1. [About the Dataset](#-about-the-dataset)
+2. [Data Preprocessing](#-data-preprocessing)
+3. [Model Selection](#-model-selection)
+4. [Model Analysis](#-model-analysis)
+5. [Summary](#-summary)
+6. [Next Steps](#-next-steps)
 
 
 # About the Dataset
@@ -21,7 +26,7 @@ The dataset can be found at: (https://www.kaggle.com/c/house-prices-advanced-reg
 
 There are a total of 79 features, an Id column, and the SalePrice column. Id is an unique identifier for each transaction, and the SalePrice is the target column that the model aims to predict.
 
-### Feature Types:
+### Features:
 
 Based on the descriptions of the features, which can be found here: (https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data), the features can be categorized as follows. 
 
@@ -40,16 +45,52 @@ Based on the descriptions of the features, which can be found here: (https://www
 # Data Preprocessing
 
 ### Treatment of Nulls:
+Training dataset contains missing values in 19 features. Incoming new data are likely to contain missing values as well, so all features are equipped with an imputation method for nulls. 
 
-Missing data are to be imputed. 
+### Engineered Features:
+1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground
+2. HouseAge = the age of the home at the time of the sale
+3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath
+4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground
+
+### Outliers:
+Features that exhibit an extreme right skew include: 'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
+From these features, I removed observations with outliers that are more than 5 times the IQR in order to reduce noise, while maintaining as many observations as possible.
+
+### Encoding and Scaling:
+Categorical nominal features are OneHotEncoded, categorical ordinal features are OrdinalEncoded.
+For numeric feature, I used the following scalers:
+1. StandardScaler - approximately normal distributions
+2. RobustScaler - skewed distirbutions and/or many outliers
+3. MinMax - year, to maintain the relative difference between years
 
 # Model Selection
+
+### Log of Target
+
+
+### LinearRegression
+- Lasso
+- Polynomial
+
+### Ensemble
+- RandomForest
+- XGBoost
+
+### GridSearchCV & RandomizedSearchCV
+
+![lasso_gs_pipeline](https://github.com/user-attachments/assets/74d4f8b2-138c-485d-b67e-3d95959881a3)
+
+### Best Model & Kaggle Submission
+
+![kaggle_submission](https://github.com/user-attachments/assets/26c45416-d87f-468b-9dc4-39b20d396b42)
+
 
 # Model Analysis
 
 ![strength_coef_model](https://github.com/user-attachments/assets/65ce82e7-3280-4739-bb72-216fb7bf17d4)
 
-# Limitations of the Model
+### Limitations of the Model
 
 # Summary
 
