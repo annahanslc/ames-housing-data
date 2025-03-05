@@ -26,21 +26,40 @@ The dataset can be found at: (https://www.kaggle.com/c/house-prices-advanced-reg
 
 There are a total of 79 features, an Id column, and the SalePrice column. Id is an unique identifier for each transaction, and the SalePrice is the target column that the model aims to predict.
 
-### Features:
+### 🔠 Features:
 
 Based on the descriptions of the features, which can be found here: (https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data), the features can be categorized as follows. 
 
-##### Categorical Nominal Features: 31
-- Cover a wide range of characteristics, everything from the shape of the property (LotShape) to zoning classification (MSZoning).
+- 31 Categorical Nominal Features: cover a wide range of characteristics, everything from the shape of the property (LotShape) to zoning classification (MSZoning).
 
-##### Categorical Ordinal Features: 17
-- The condition of the home, on a scale, such as the quality of the kitchen from Poor to Excellent (KitchenQual).
+- 17 Categorical Ordinal Features: the condition of the home, on a scale, such as the quality of the kitchen from Poor to Excellent (KitchenQual).
 
-##### Numeric Continuous Features: 19
-- Most pertain to area, such as the number of square feet in the basement (TotalBsmtSF), and the square footage of above ground living area (GrLivArea).
+- 19 Numeric Continuous Features: most pertain to area, such as the number of square feet in the basement (TotalBsmtSF), and the square footage of above ground living area (GrLivArea).
 
-##### Numeric Discrete Features: 12
-- Frequently quantities, such as how many full bathrooms there are above grade (FullBath), or the number of fireplaces (Fireplaces).
+- 12 Numeric Discrete Features: frequently quantities, such as how many full bathrooms there are above grade (FullBath), or the number of fireplaces (Fireplaces).
+
+### 📈 Feature Correlations:
+
+##### Correlation to the target, SalePrice
+The features with the highest correlations to the SalePrice include: 
+- OverallQual @ 79.1%
+- Neighborhood @ 73.9%
+- GrLivArea @ 70.9%
+- ExterQual @ 69.1%
+
+The below barplot summarizes the correlations of each individual feature to the SalePrice
+![corr_feats_saleprice](https://github.com/user-attachments/assets/1dbe0224-5316-4f0d-8d2b-3fa909047420)
+
+
+##### Garage
+
+##### Basement
+
+##### Others
+- Zoning & Neighborhood
+- RoofStyle and RoofMatl
+- Exterior1st and Exterior2nd
+- 
 
 # Data Preprocessing
 
@@ -67,7 +86,10 @@ For numeric feature, I used the following scalers:
 # Model Selection
 
 ### Log of Target
+The target, SalePrice, has a strong right skew (left). 
+To improve model performance, I took the log of the SalePrice to normalize the distribution (right).
 
+![SalePrice_distribution](https://github.com/user-attachments/assets/abf9761e-9d05-4f64-a480-3a812d7ad7bc) ![SalePrice_log_distribution](https://github.com/user-attachments/assets/06fac3a4-994b-4d72-a7d1-a76941cca399)
 
 ### LinearRegression
 - Lasso
