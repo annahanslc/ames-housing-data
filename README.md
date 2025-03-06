@@ -41,14 +41,40 @@ Based on the descriptions of the features, which can be found here: (https://www
 ### 📈 Feature Correlations:
 
 ##### Correlation to the target, SalePrice
-The features with the highest correlations to the SalePrice include: 
-- OverallQual @ 79.1%
-- Neighborhood @ 73.9%
-- GrLivArea @ 70.9%
-- ExterQual @ 69.1%
-
-The below barplot summarizes the correlations of each individual feature to the SalePrice.
+The below barplot shows the correlations of each individual feature to the SalePrice, sorted from highest to lowest, based on the standard Pearson correlation, r.
 ![corr_feats_saleprice](https://github.com/user-attachments/assets/1dbe0224-5316-4f0d-8d2b-3fa909047420)
+
+The features with the 20 highest correlations to the SalePrice are: 
+
+| Feature       |   Corr to SalePrice |
+|:--------------|--------------------:|
+| OverallQual   |           0.790982  |
+| Neighborhood  |           0.73863   |
+| GrLivArea     |           0.708624  |
+| ExterQual     |           0.690933  |
+| BsmtQual      |           0.681905  |
+| KitchenQual   |           0.675721  |
+| GarageCars    |           0.640409  |
+| GarageArea    |           0.623431  |
+| TotalBsmtSF   |           0.613581  |
+| 1stFlrSF      |           0.605852  |
+| FullBath      |           0.560664  |
+| GarageFinish  |           0.553059  |
+| FireplaceQu   |           0.542181  |
+| TotRmsAbvGrd  |           0.533723  |
+| YearBuilt     |           0.522897  |
+| YearRemodAdd  |           0.507101  |
+| Foundation    |           0.506328  |
+| GarageType    |           0.499204  |
+| MasVnrArea    |           0.472614  |
+| Fireplaces    |           0.466929  |
+
+
+##### *Observations*
+1. Quality indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range from Poor to Excellent, which seem to be a subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This shows that a buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, or emotionally affected by things that are difficult to quantity using just number or statistics. These quality feature should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
+
+2. 
+
 
 ##### *Multicollinearity in Garage Features*
 The garage features show multicollinearity, as seen in the below correlation heatmap. 
