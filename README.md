@@ -80,10 +80,10 @@ Again, I will use models that perform feature selection to address the multicoll
 Training dataset contains missing values in 19 features. Incoming new data are likely to contain missing values as well, so all features are equipped with an imputation method for nulls. 
 
 ### 👷 Engineered Features:
-1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground
-2. HouseAge = the age of the home at the time of the sale
-3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath
-4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground
+1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home
+2. HouseAge = the age of the home at the time of the sale, as newer homes tend to cost more
+3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath, signals the size of the home
+4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground, again, another indicator of luxury
 
 ### 🦄 Outliers:
 Features that exhibit an extreme right skew include: 'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
