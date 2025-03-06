@@ -72,24 +72,24 @@ Again, I will use models that perform feature selection to address the multicoll
 
 # Data Preprocessing
 
-### Pipeline Overview:
+### 🪈 Pipeline Overview:
 
 ![lasso_gs_pipeline](https://github.com/user-attachments/assets/74d4f8b2-138c-485d-b67e-3d95959881a3)
 
-### Treatment of Nulls:
+### 🚫 Treatment of Nulls:
 Training dataset contains missing values in 19 features. Incoming new data are likely to contain missing values as well, so all features are equipped with an imputation method for nulls. 
 
-### Engineered Features:
+### 👷 Engineered Features:
 1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground
 2. HouseAge = the age of the home at the time of the sale
 3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath
 4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground
 
-### Outliers:
+### 🦄 Outliers:
 Features that exhibit an extreme right skew include: 'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
 From these features, I removed observations with outliers that are more than 5 times the IQR in order to reduce noise, while maintaining as many observations as possible.
 
-### Encoding and Scaling:
+### 📐 Encoding and Scaling:
 Categorical nominal features are OneHotEncoded, categorical ordinal features are OrdinalEncoded.
 For numeric feature, I used the following scalers:
 1. StandardScaler - approximately normal distributions
