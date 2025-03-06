@@ -72,6 +72,10 @@ Again, I will use models that perform feature selection to address the multicoll
 
 # Data Preprocessing
 
+### Pipeline Overview:
+
+![lasso_gs_pipeline](https://github.com/user-attachments/assets/74d4f8b2-138c-485d-b67e-3d95959881a3)
+
 ### Treatment of Nulls:
 Training dataset contains missing values in 19 features. Incoming new data are likely to contain missing values as well, so all features are equipped with an imputation method for nulls. 
 
@@ -110,7 +114,6 @@ To improve model performance, I took the log of the SalePrice to normalize the d
 
 ### GridSearchCV & RandomizedSearchCV
 
-![lasso_gs_pipeline](https://github.com/user-attachments/assets/74d4f8b2-138c-485d-b67e-3d95959881a3)
 
 ### Best Model & Kaggle Submission
 
