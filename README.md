@@ -107,12 +107,13 @@ To improve model performance, I took the log of the SalePrice to normalize the d
 ![SalePrice_distribution](https://github.com/user-attachments/assets/abf9761e-9d05-4f64-a480-3a812d7ad7bc) ![SalePrice_log_distribution](https://github.com/user-attachments/assets/06fac3a4-994b-4d72-a7d1-a76941cca399)
 
 ### LinearRegression
-- Lasso
-- Polynomial
+- Linear Regression - best log RMSE @ 
+- Lasso - best log val RMSE @ 0.1322
+- Lasso with Polynomial - best log val RMSE @ 0.1372
 
 ### Ensemble
-- RandomForest
-- XGBoost
+- RandomForest - best log val RMSE @ 0.21229
+- XGBoost - best log val RMSE @ 
 
 ### GridSearchCV & RandomizedSearchCV
 
