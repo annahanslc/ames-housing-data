@@ -86,7 +86,9 @@ Training dataset contains missing values in 19 features. Incoming new data are l
 4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground, again, another indicator of luxury
 
 ### 🦄 Outliers:
-Features that exhibit an extreme right skew include: 'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
+Features that exhibit an extreme right skew include: 
+'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
+
 From these features, I removed observations with outliers that are more than 5 times the IQR in order to reduce noise, while maintaining as many observations as possible.
 
 ### 📐 Encoding and Scaling:
