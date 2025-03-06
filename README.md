@@ -107,27 +107,41 @@ To improve model performance, I took the log of the SalePrice to normalize the d
 ![SalePrice_distribution](https://github.com/user-attachments/assets/abf9761e-9d05-4f64-a480-3a812d7ad7bc) ![SalePrice_log_distribution](https://github.com/user-attachments/assets/06fac3a4-994b-4d72-a7d1-a76941cca399)
 
 ### LinearRegression
-- Linear Regression - best log RMSE @ 
-- Lasso - best log val RMSE @ 0.1322
-- Lasso with Polynomial - best log val RMSE @ 0.1372
+- Linear Regression - best log RMSE @ 0.34314
+- Lasso - best log val RMSE @ 0.13223
 
-### Ensemble
+### Ensemble with GridSearchCV & RandomizedSearchCV
 - RandomForest - best log val RMSE @ 0.21229
-- XGBoost - best log val RMSE @ 
-
-### GridSearchCV & RandomizedSearchCV
+- XGBoost - best log val RMSE @ 0.16118
 
 
 ### Best Model & Kaggle Submission
+
+Lasso optimized using GridSearchCV returned the best results:
+![image](https://github.com/user-attachments/assets/a2eae525-8441-479e-bc20-04a033e1f9ee)
 
 ![kaggle_submission](https://github.com/user-attachments/assets/26c45416-d87f-468b-9dc4-39b20d396b42)
 
 
 # Model Analysis
 
+### The top 10 coefficients in the final model are as follows:
+
+1. RoofMatl_ClyTile @ 0.296
+2. GrLivArea @ 0.122
+3. Neighborhood_StoneBr @ 0.089
+4. Neighborhood_Crawfor @ 0.085
+5. Neighborhood_NridgHt @ 0.082
+6. Exterior1st_BrkFace @ 0.078
+7. MSSubClass_160 @ 0.074
+8. OverallQual @ 0.061
+9. GarageCars @ 0.055
+10. Neighborhood_Somerst @ 0.048
+
 ![strength_coef_model](https://github.com/user-attachments/assets/65ce82e7-3280-4739-bb72-216fb7bf17d4)
 
-### Limitations of the Model
+
+
 
 # Summary
 
