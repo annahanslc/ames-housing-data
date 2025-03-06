@@ -47,19 +47,28 @@ The features with the highest correlations to the SalePrice include:
 - GrLivArea @ 70.9%
 - ExterQual @ 69.1%
 
-The below barplot summarizes the correlations of each individual feature to the SalePrice
+The below barplot summarizes the correlations of each individual feature to the SalePrice.
 ![corr_feats_saleprice](https://github.com/user-attachments/assets/1dbe0224-5316-4f0d-8d2b-3fa909047420)
 
+##### *Multicollinearity in Garage Features*
+The garage features show multicollinearity, as seen in the below correlation heatmap. 
+I will use models that perform feature selection to address the multicollinearity. 
 
-##### Garage
+![corr_garage_heatmap](https://github.com/user-attachments/assets/1e78df91-48ec-4bd8-8bec-ab4f1cbc9951)
 
-##### Basement
 
-##### Others
+##### *Multicollinearity in the Basement Features*
+The basement quality features show multicollinearity, as seen in the below correlation heatmap. 
+Again, I will use models that perform feature selection to address the multicollinearity. 
+
+![corr_bsmt_heatmap](https://github.com/user-attachments/assets/82e531aa-bea1-4831-9579-816ff767705f)
+
+
+##### *Others Multicollinearity to Notes*
 - Zoning & Neighborhood
 - RoofStyle and RoofMatl
 - Exterior1st and Exterior2nd
-- 
+
 
 # Data Preprocessing
 
