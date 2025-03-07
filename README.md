@@ -10,6 +10,8 @@ The Ames City Assesor is responsible for assessing all real property at 100% of 
 
 The goal of this project is to generate a regression model that will allow the Ames City Assessor to predict the market value of any home in Ames City. 
 
+Throughout the project, I will gauge the accuracy of my model by calculating the log RMSE of my validation dataset. Ultimately, the success of the model will be determined by Kaggle in the form of log RMSE calculated based on my predictions of the test dataset. This test dataset does not contain the target feature, SalePrice.  
+
 # Directory
 
 1. [About the Dataset](#-about-the-dataset)
@@ -71,7 +73,7 @@ The features with the 20 highest correlations to the SalePrice are:
 
 
 ##### *Observations*
-1. 🥰 **Quality** indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range from Poor to Excellent, which required a certain amount of subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This tells us that:
+1. 🥰 **Quality** indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range from Poor to Excellent, which required a certain amount of subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This indicates that:
     1. A buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, and/or be emotionally affected, by things that are difficult to quantity using numbers or statistics.
     2. Quality features should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
     3. Since there are currently no features in the dataset to capture the quality of bathrooms, I would recommend adding BathsOverallQual to the data gathering process, and then incorporate it into this model.
@@ -107,22 +109,19 @@ The below correlation heatmap shows the correlation between the nominal basement
 
 As expected, there are notable correlations between these features. Based on my investigation on the garage features, I am confident that most of these correlations are driven by the fact that the homes that do not have a basement will have the same values, NA, across all features. Due to this unavoidable characteristic, basement nominal features show multicollinearity. Again, I will use models that perform feature selection to address the multicollinearity. 
 
-##### *Others Multicollinearity to Notes*
-- Zoning & Neighborhood
-- RoofStyle and RoofMatl
-- Exterior1st and Exterior2nd
-
 
 # Data Preprocessing
 
 ### 🪈 Pipeline Overview:
 
-![lasso_gs_pipeline](https://github.com/user-attachments/assets/74d4f8b2-138c-485d-b67e-3d95959881a3)
+<img width="997" alt="preprocessing_pipeline" src="https://github.com/user-attachments/assets/a6029479-5166-4741-a7ba-72ebc56e1ace" />
+
 
 ### 🚫 Treatment of Nulls:
-Training dataset contains missing values in 19 features. Incoming new data are likely to contain missing values as well, so all features are equipped with an imputation method for nulls. 
+The training dataset contains missing values in 19 features. Incoming new data is highly likely to also contain missing values in these features, but also in features that do not have nulls in the training dataset. Therefore, I have equipped all features with an imputation method for nulls. 
 
 ### 👷 Engineered Features:
+In order to capture new perspectives on the home that will help predict the sale price, I tried incorporating 11 different engineered features into my model. I compared the log RMSE, the 
 1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home
 2. HouseAge = the age of the home at the time of the sale, as newer homes tend to cost more
 3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath, signals the size of the home
