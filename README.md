@@ -10,7 +10,28 @@ The Ames City Assesor is responsible for assessing all real property at 100% of 
 
 The goal of this project is to generate a regression model that will allow the Ames City Assessor to predict the market value of any home in Ames City. 
 
-Throughout the project, I will gauge the accuracy of my model by calculating the log RMSE of my validation dataset. Ultimately, the success of the model will be determined by Kaggle in the form of log RMSE calculated based on my predictions of the test dataset. This test dataset does not contain the target feature, SalePrice.  
+Throughout the project, I will gauge the accuracy of my model by calculating the log RMSE of my validation dataset. Ultimately, the success of the model will be determined by Kaggle in the form of log RMSE of my predictions. The predictions will be produced by my final model based on the features provided in test.csv, which does not contain the target feature, SalePrice.  
+
+# Process Overview
+
+1. Conduct Exploratory Data Analysis (EDA) to understand the features individually. During my EDA, I will also:
+    1. Address nulls and determine imputation stratgies
+    2. Check for outliers and determine if any need to be removed
+    3. Check for bad data or other concerns
+    4. Determine if the feature needs to be encoded or scaled
+    5. Analyze features for correlations and multicollinearity
+2. Engineer new features to capture new perspectives on the data to provide additional information to the model.
+3. Build a data preprocessing pipeline to easily fit and transform data based on my discoveries during EDA. My pipeline will include the following components:
+    1. Outlier Remover Custom Transformer
+    2. Feature Engineering Custom Transformer
+    3. Imputers using various strategies
+    4. Encoders for OneHotEncoding and OrdinalEncoding
+    5. Scalers for scaling various types of numeric features.
+4. Fit various models and calculate the log RMSE to determine the best model for this project
+5. Use GridSearchCV and RandomizedSearchCV to fine tune the model's hyperparameters.
+6. Once the final model is selected, analyze the model to understand what features are the strongest drivers.
+7. Make plans for next steps and future improvements to the model.
+   
 
 # Directory
 
