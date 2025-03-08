@@ -10,14 +10,16 @@ The Ames City Assesor is responsible for assessing all real property at 100% of 
 
 The goal of this project is to generate a regression model that will allow the Ames City Assessor to predict the market value of any home in Ames City. 
 
-Throughout the project, I will gauge the accuracy of my model by calculating the log RMSE of my validation dataset. Ultimately, the success of the model will be determined by Kaggle in the form of log RMSE of my predictions. The predictions will be produced by my final model based on the features provided in test.csv, which does not contain the target feature, SalePrice.  
+Throughout the project, I will gauge the accuracy of my model by calculating the log RMSE of my validation dataset. Ultimately, the success of the model will be determined by Kaggle in the form of log RMSE of my predictions. 
 
 # Process Overview
+
+The below outlines the steps I will take in this project. 
 
 1. Conduct Exploratory Data Analysis (EDA) to understand the features individually. During my EDA, I will also:
     1. Address nulls and determine imputation stratgies
     2. Check for outliers and determine if any need to be removed
-    3. Check for bad data or other concerns
+    3. Check for bad data
     4. Determine if the feature needs to be encoded or scaled
     5. Analyze features for correlations and multicollinearity
 2. Engineer new features to capture new perspectives on the data to provide additional information to the model.
@@ -36,11 +38,14 @@ Throughout the project, I will gauge the accuracy of my model by calculating the
 # Directory
 
 1. [About the Dataset](#-about-the-dataset)
-2. [Data Preprocessing](#-data-preprocessing)
-3. [Model Selection](#-model-selection)
-4. [Model Analysis](#-model-analysis)
-5. [Summary](#-summary)
-6. [Next Steps](#-next-steps)
+    1. Features
+    2. Feature Correlations
+    3. Observations
+3. [Data Preprocessing](#-data-preprocessing)
+4. [Model Selection](#-model-selection)
+5. [Model Analysis](#-model-analysis)
+6. [Summary](#-summary)
+7. [Next Steps](#-next-steps)
 
 
 # About the Dataset
@@ -64,7 +69,12 @@ Based on the descriptions of the features, which can be found here: (https://www
 ### 📈 Feature Correlations:
 
 ### Correlation to the target, SalePrice
-The below barplot shows the correlations of each individual feature to the SalePrice, sorted from highest to lowest, based on the standard Pearson correlation, r.
+To get a general idea of the correlations within the dataset prior to preprocessing, I will calculate the correlation of all features to the target, SalePrice. Since most features are categorical, I will use the *dython* library's nominal associations function to help determine the Pearson correlation coefficients (r). 
+
+However, I must keep in mind that dython associations treat ordinal features as nominal, meaning that is does not understand the order in the values. I will not have the complete picture until I encode these features using the Ordinal Encoder. 
+
+The below barplot shows the correlations sorted from highest to lowest.
+
 ![corr_feats_saleprice](https://github.com/user-attachments/assets/1dbe0224-5316-4f0d-8d2b-3fa909047420)
 
 The features with the 20 highest correlations to the SalePrice are: 
@@ -93,11 +103,12 @@ The features with the 20 highest correlations to the SalePrice are:
 | Fireplaces    |           0.466929  |
 
 
-### *Observations*
-1. 🥰 **Quality** indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range from Poor to Excellent, which required a certain amount of subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This indicates that:
+### *Observations of Features that Correlate Highly with SalePrice*
+1. 🥰 **Quality** indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range either from 1-10 or from Poor to Excellent, which required a certain amount of subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This indicates that:
     1. A buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, and/or be emotionally affected, by things that are difficult to quantity using numbers or statistics.
     2. Quality features should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
     3. Since there are currently no features in the dataset to capture the quality of bathrooms, I would recommend adding BathsOverallQual to the data gathering process, and then incorporate it into this model.
+    4. Again, because dython associations does not account for the order in ordinal features, these correlations may not paint the full picture, and could even be misleading. No observations are conclusive at this point in the process. 
 
 2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the 2 features that have the highest correlations besides Neighborhood:
 
@@ -105,7 +116,7 @@ The features with the 20 highest correlations to the SalePrice are:
   
        ![sns_facet_neighborhood_grlivarea](https://github.com/user-attachments/assets/bfc5aed4-c76e-401c-b895-8ccaa16bb919)
 
-3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I hope to find way new ways to capture the level of "luxury" of the home, rather than just the size.
+3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I will try to find ways to capture the level of "luxury" of the home, rather than just the size.
 
     1. **GrLivArea** has the 3rd highest correlation with SalePrice, so I used the below **seaborn regplot** to visualize the relationship between the two. As expected, the regplot shows a positive correlation between SalePrice and GrLivArea. The line represents the best-fit linear regression model, and the shaded area is the confidence interval, which represents the level of uncertainty of the model. The confidence interval here is fairly narrow, which means that model is fairly confident. How tightly the datapoints are clustered around the regression line speaks to the strength of the relationship. The observations surround the line, however, they are not tightly clustered, so GrLivArea is in no way a perfect predictor of SalePrice. This is especially evident with the outliers that have a large GrLivArea, but do not fetch a high SalePrice.
 
@@ -138,6 +149,11 @@ The below correlation heatmap shows the correlation between the nominal basement
 ![corr_bsmt_heatmap](https://github.com/user-attachments/assets/82e531aa-bea1-4831-9579-816ff767705f)
 
 As expected, there are notable correlations between these features. Based on my investigation on the garage features, I am confident that most of these correlations are driven by the fact that the homes that do not have a basement will have the same values, NA, across all features. Due to this unavoidable characteristic, basement nominal features show multicollinearity. Again, I will use models that perform feature selection to address the multicollinearity. 
+
+
+### *Observations of Other Features*
+
+1. I hypothesize that the type of building would be correlated to the SalePrice. Using *dython's nominal associations*, which calculates the statistical relationship between categorical variables, the Pearson R correlation coefficient for SalePrice and BldgType is 0.19. 
 
 
 # Data Preprocessing
