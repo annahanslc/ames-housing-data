@@ -153,7 +153,18 @@ As expected, there are notable correlations between these features. Based on my 
 
 ### *Observations of Other Features*
 
-1. I hypothesize that the type of building would be correlated to the SalePrice. Using *dython's nominal associations*, which calculates the statistical relationship between categorical variables, the Pearson R correlation coefficient for SalePrice and BldgType is 0.19. 
+1. I expect that the type of building would be correlated to the SalePrice as well. The Pearson R correlation coefficient for SalePrice and BldgType is 0.19, which is not as high as some of the other features, but still notable. To visualize what kind of impact it has on SalePrice, I will use *seaborn's lmplot* to plot SalePrice against GrLivArea using BldgType as the hue.
+
+   ![sns_price_area_bldgtype](https://github.com/user-attachments/assets/8e50e986-23da-45a4-8848-1c3de3c0afb2)
+
+The above plot leads to a few interesting observations:
+
+1. The slope is much steeper for single family homes (1Fam) than for two-family conversion homes (2FmCon). Two-family conversion homes were originally built as one-family dwelling, but later converted into 2 dwellings. The steeper slope means that there is a stronger relationship between SalePrice and GrLivArea for 1Fam than for 2FamCon. This indicates that even if the homes are the same size, a 2FmCon correlates to a lower SalePrice than a 1Fam. This does not necessarily mean that converting a single family home into a 2 family conversion will decrease the SalePrice, because correlation does not mean causation, and there may be confounding factors, but this would be something interesting to look into for a future project.
+2. The size and the price of a two-family conversion are limited. Whereas single-family homes have a wide range of values, with outliers in all directions, two-family conversions are limited in size and price. Based on my research, two-family conversions are typically sold as 1 single building. This means that the types of single family homes that are usually converted into two-family dwellings are not too big. This makes sense, because conversions are usually conducted in high-density areas to meet housing demand. It seems unlikely that a high-end luxury home would ever be converted.
+3. The regression lines for 2famCon and Duplex are almost the same. This signals that the correlation between area and price is similar for these two building types. This is unsurprising, because 2famCon is basically a Duplex, just converted after the fact.
+4. Townhouse End Units (TownhsE), interestingly, have the steepest slope. This means that they exhibit the highest price per square feet. However, their area is limited, so we don't see any high square footages that can be observed in single family homes.
+
+
 
 
 # Data Preprocessing
