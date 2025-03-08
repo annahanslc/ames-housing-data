@@ -101,7 +101,13 @@ The features with the 20 highest correlations to the SalePrice are:
 
 2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. 
 
-3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I hope to find way new ways to capture the level of "luxury" of the home, rather than just the size. 
+3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I hope to find way new ways to capture the level of "luxury" of the home, rather than just the size.
+
+GrLivArea has the 3rd highest correlation with SalePrice, so I used the seaborn regplot to visualize the relationship between the two:
+
+![sns_saleprice_grlivarea](https://github.com/user-attachments/assets/3b3f1c27-8f2f-4538-9a60-1e8c42eb9dbf)
+
+As expected, the regplot shows a positive correlation between SalePrice and GrLivArea. The line represents the best-fit linear regression model, and the shaded area is the confidence interval, which represents the level of uncertainty of the model. The confidence interval here is fairly narrow, which means that model is fairly confident. How tightly the datapoints are clustered around the regression line speaks to the strength of the relationship. The observations surround the line, however, they are not tightly clustered, so GrLivArea is in no way a perfect predictor of SalePrice. 
 
 4. 🚗 **GarageCars** and **GarageArea** have similar levels of correlation with SalePrice. This makes sense, as the the number of cars a garage can hold increases with the area of the garage. I will calculate the correlation between these two variables, as well as other garage-related features, to check for multicollinearity, as this will affect my feature selection and/or model selection.
 
