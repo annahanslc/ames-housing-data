@@ -63,7 +63,7 @@ Based on the descriptions of the features, which can be found here: (https://www
 
 ### 📈 Feature Correlations:
 
-##### Correlation to the target, SalePrice
+### Correlation to the target, SalePrice
 The below barplot shows the correlations of each individual feature to the SalePrice, sorted from highest to lowest, based on the standard Pearson correlation, r.
 ![corr_feats_saleprice](https://github.com/user-attachments/assets/1dbe0224-5316-4f0d-8d2b-3fa909047420)
 
@@ -93,21 +93,24 @@ The features with the 20 highest correlations to the SalePrice are:
 | Fireplaces    |           0.466929  |
 
 
-##### *Observations*
+### *Observations*
 1. 🥰 **Quality** indicators, including OverallQual, ExterQual, BsmtQual, KitchenQual, and FireplaceQual have strong correlations to SalePrice. These indicators are on a range from Poor to Excellent, which required a certain amount of subjective judgement from an observer. Although it is a subjective decision, or perhaps, it is precisely because it is someone's opinion, they are highly correlated to the SalePrice. This indicates that:
     1. A buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, and/or be emotionally affected, by things that are difficult to quantity using numbers or statistics.
     2. Quality features should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
     3. Since there are currently no features in the dataset to capture the quality of bathrooms, I would recommend adding BathsOverallQual to the data gathering process, and then incorporate it into this model.
 
-2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. 
+2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the 2 features that have the highest correlations besides Neighborhood:
+
+    1. *SalePrice vs OverallQual by Neighborhood* Since OverallQual has the highest correlation with SalePrice, I will plot it against SalePrice, and separate it into subsets by neighborhood. The below **seaborn FacetGrid** plot shows a linear regression line for each neighborhood, and its corresponding confidence interval as indicated by the shaded area surrounding the line. The plot indicates that having a better overall quality has a more positive correlation with SalePrice in some neighborhoods than in others. While an Excellent OverallQual correlated to a much higher SalePrice in one neighborhood, it didn't correlate to much of a higher SalePrice in a different neighborhood. This highlights the important role that neighborhood plays in helping the model to accurately predict the SalePrice.
+  
+       ![sns_facet_neighborhood_grlivarea](https://github.com/user-attachments/assets/bfc5aed4-c76e-401c-b895-8ccaa16bb919)
 
 3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I hope to find way new ways to capture the level of "luxury" of the home, rather than just the size.
 
-GrLivArea has the 3rd highest correlation with SalePrice, so I used the seaborn regplot to visualize the relationship between the two:
+    1. **GrLivArea** has the 3rd highest correlation with SalePrice, so I used the below **seaborn regplot** to visualize the relationship between the two. As expected, the regplot shows a positive correlation between SalePrice and GrLivArea. The line represents the best-fit linear regression model, and the shaded area is the confidence interval, which represents the level of uncertainty of the model. The confidence interval here is fairly narrow, which means that model is fairly confident. How tightly the datapoints are clustered around the regression line speaks to the strength of the relationship. The observations surround the line, however, they are not tightly clustered, so GrLivArea is in no way a perfect predictor of SalePrice. This is especially evident with the outliers that have a large GrLivArea, but do not fetch a high SalePrice.
 
-![sns_saleprice_grlivarea](https://github.com/user-attachments/assets/3b3f1c27-8f2f-4538-9a60-1e8c42eb9dbf)
+    ![sns_saleprice_grlivarea](https://github.com/user-attachments/assets/3b3f1c27-8f2f-4538-9a60-1e8c42eb9dbf)
 
-As expected, the regplot shows a positive correlation between SalePrice and GrLivArea. The line represents the best-fit linear regression model, and the shaded area is the confidence interval, which represents the level of uncertainty of the model. The confidence interval here is fairly narrow, which means that model is fairly confident. How tightly the datapoints are clustered around the regression line speaks to the strength of the relationship. The observations surround the line, however, they are not tightly clustered, so GrLivArea is in no way a perfect predictor of SalePrice. 
 
 4. 🚗 **GarageCars** and **GarageArea** have similar levels of correlation with SalePrice. This makes sense, as the the number of cars a garage can hold increases with the area of the garage. I will calculate the correlation between these two variables, as well as other garage-related features, to check for multicollinearity, as this will affect my feature selection and/or model selection.
 
