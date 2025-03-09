@@ -182,6 +182,14 @@ The above plot leads to a few interesting observations:
 
 - In line with the displot, the lowest mode is No Garage, and the next one is Unfinished Garage. Surprisingly, the next highest is Finished Garage, not Rough Finish. I did not expect the Rough Finish to have a higher mode than Finished. However, looking back to the displot, finished garage homes have a fatter tail towards the higher end of Sale Price. This indicates that although the mode may be lower, there is a greater chance for a home with a finished garage to correlate to a higher sale price than a home with a rough finished garage.
 
+3. **Kitchen Quality** To visualize the distribution of sale price at various levels of kitchen quality, I will use the *seaborn violin plot* together with the *swarm plot*. The violin plot is able to show the distribution density and shape using KDE, while the swarm plot shows the real data points, which in turn, allows us to compare the sample sizes.
+
+    ![sns_kitchenqual](https://github.com/user-attachments/assets/0cb36de7-3e08-42a3-ae19-9e3b41652e8f)
+
+- From the above plot, it is notable that the sample size for Excellent and Fair are much smaller than those for Good and Typical/Average.
+- Overall, there is definitely a positive correlation between a better quality kitchen and the sale price of the home.
+- It is interesting to see that an Excellent quality kitchen correlates to a very wide range of sales prices.
+- Like I mentioned earlier, the quality indicators offer a unique perspective on the home, because these can capture aspects of the home that may not be quantifiable, but can still influence the purchasing behavior or a home buyer, thereby, affecting the sale price.
 
 
 # Data Preprocessing
