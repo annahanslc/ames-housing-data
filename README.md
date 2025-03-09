@@ -239,7 +239,7 @@ None of the imputation methods are ideal for this situation, but based on the ab
 ### 👷 Engineered Features:
 To capture new perspectives on the home, I created 11 engineered features and added them to my model, one by one. With each new feature, I examined the uplift in log RMSE. If the log RMSE improved, I kept the new feature, if it did not, I dropped the feature. Through this process, I have decided to keep the following 4 new engineered features:
 
-1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is truly a a sign of luxury. According to realtor.com the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keep in mind that bedrooms are usually at least twice the size of a bathroom. The cost per SF is more than double. 
+1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is truly a a sign of luxury. According to realtor.com the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keep in mind that bedrooms are usually at least twice the size of a bathroom. The cost per SF is more than double. [Go to references](#-reference-1)
 2. HouseAge = the age of the home at the time of the sale, as newer homes tend to cost more
 3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath, signals the size of the home
 4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground, again, another indicator of luxury
@@ -301,7 +301,8 @@ Lasso optimized using GridSearchCV returned the best results:
 
 # References
 
-##### Realtor.com !["How Much Does it Cost to Add a Bathroom, Bedroom, or More Room to Your Home?"](https://www.realtor.com/advice/home-improvement/how-much-does-it-cost-to-add-a-bathroom/)
+##### Reference 1
+Realtor.com: ["How Much Does it Cost to Add a Bathroom, Bedroom, or More Room to Your Home?"](https://www.realtor.com/advice/home-improvement/how-much-does-it-cost-to-add-a-bathroom/)
 
 
 
