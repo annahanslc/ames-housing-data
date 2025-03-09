@@ -227,9 +227,19 @@ The above plot leads to a few interesting observations:
 ### 🚫 Treatment of Nulls:
 The training dataset contains missing values in 19 features. Incoming new data is highly likely to also contain missing values in these features, but also in features that do not have nulls in the training dataset. Therefore, I have equipped all features with an imputation method for nulls. 
 
+##### Decisions to Note:
+Nulls in GarageYrBlt most likely means that there is no garage. I have several options to impute these nulls. I can:
+
+1. Impute with 0, to signify no garage. However, since the valid values are years, which are in the thousands, 0 is not a valid year and could distort the relationship in between the valid years. The model could mistakenly interpret 0 as a very old garage.
+2. Impute with a constant, such as 1900. But again, this could mislead the model to think of it as an old garage rather than no garage. Any other year I choose as the constant could sway the model, misdirecting the model from understanding the correlation between the valid years. 
+3. Impute with the year the same year that the house with built in. This assumes that most garages are built in the same year that the house was built. According to Pearson coefficient, the correlation between the two is 0.826, which is very strong. The downside is that we lose the perspective of which homes don't have a garage and which ones do.  However, there are 6 other features that still capture this crucial detail: GarageType, GarageFinish, GarageCars, GarageArea, GarageQual and GarageCond. 
+
+None of the imputation methods are ideal for this situation, but based on the above pros and cons, I will impute with the same year that the house was built in, with the goal of trying to preserve the unique information that this feature brings (age of the garage). 
+
 ### 👷 Engineered Features:
-In order to capture new perspectives on the home that will help predict the sale price, I tried incorporating 11 different engineered features into my model. I compared the log RMSE, the 
-1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home
+To capture new perspectives on the home, I created 11 engineered features and added them to my model, one by one. With each new feature, I examined the uplift in log RMSE. If the log RMSE improved, I kept the new feature, if it did not, I dropped the feature. Through this process, I have decided to keep the following 4 new engineered features:
+
+1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is truly a a sign of luxury. According to realtor.com the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keep in mind that bedrooms are usually at least twice the size of a bathroom. The cost per SF is more than double. 
 2. HouseAge = the age of the home at the time of the sale, as newer homes tend to cost more
 3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath, signals the size of the home
 4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground, again, another indicator of luxury
@@ -288,6 +298,10 @@ Lasso optimized using GridSearchCV returned the best results:
 10. Neighborhood_Somerst @ 0.048
 
 ![strength_coef_model](https://github.com/user-attachments/assets/65ce82e7-3280-4739-bb72-216fb7bf17d4)
+
+# References
+
+##### Realtor.com !["How Much Does it Cost to Add a Bathroom, Bedroom, or More Room to Your Home?"](https://www.realtor.com/advice/home-improvement/how-much-does-it-cost-to-add-a-bathroom/)
 
 
 
