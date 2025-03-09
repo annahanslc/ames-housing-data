@@ -108,26 +108,26 @@ The features with the 20 highest correlations to the SalePrice are:
     1. A buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, and/or be emotionally affected, by things that are difficult to quantity using numbers or statistics.
     2. Quality features should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
     3. Since there are currently no features in the dataset to capture the quality of bathrooms, I would recommend adding BathsOverallQual to the data gathering process, and then incorporate it into this model.
-    4. Again, because dython associations does not account for the order in ordinal features, these correlations may not paint the full picture, and could even be misleading. No observations are conclusive at this point in the process.
+    4. Again, because dython associations does not account for the order in ordinal features, these correlations may not paint the full picture, and could even be misleading. 
   
     ![sns_overallqual](https://github.com/user-attachments/assets/77e32b17-63b3-4f44-b900-e1d31de64dfe)
 
-    5. The above *seaborn stripplot* visualizes the correlation between OverallQual and the SalePrice. It is clear that a higher overall quality corresponds to a higher sales price. However, the distribution is more sparse and varied on the high end of the spectrum. 
+    5. The above *seaborn stripplot* visualizes the correlation between OverallQual and the SalePrice. It is clear that a higher overall quality corresponds to a higher sales price. However, the distribution is more sparse and varied on the higher end of the scale. This means that there are fewer samples with an OverallQual of 9 or 10, and that the correlation to sale price decreases when the OverallQual is extremely high. 
 
-2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the 2 features that have the highest correlations besides Neighborhood:
+2. 🏡 **Neighborhood** SalePrice and Neighborhood has a Pearson's coefficient of 0.73863, which indicates a strong, meaningful, positive correlation. This suggests that similar homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the feature that have the highest correlations besides Neighborhood, OverallQual:
 
-    1. *SalePrice vs OverallQual by Neighborhood* Since OverallQual has the highest correlation with SalePrice, I will plot it against SalePrice, and separate it into subsets by neighborhood. The below **seaborn FacetGrid** plot shows a linear regression line for each neighborhood, and its corresponding confidence interval as indicated by the shaded area surrounding the line. The plot indicates that having a better overall quality has a more positive correlation with SalePrice in some neighborhoods than in others. While an Excellent OverallQual correlated to a much higher SalePrice in one neighborhood, it didn't correlate to much of a higher SalePrice in a different neighborhood. This highlights the important role that neighborhood plays in helping the model to accurately predict the SalePrice.
+    1. *SalePrice vs OverallQual by Neighborhood* Since OverallQual has the highest correlation with SalePrice, I will plot it against SalePrice, and separate it into subsets by neighborhood. The below **seaborn FacetGrid** plot shows a linear regression line for **each neighborhood**. The shaded area surrounding each line is the confidence interval, which how confident the model is about the range of values. The plot implies that having a high overall quality has more positive correlation with SalePrice in some neighborhoods than in others. While an Excellent OverallQual correlated to a much higher SalePrice in NoRidge (Northridge), it didn't have much effect in IDOTRR (Iowa Department of Transportation). This highlights the important role that neighborhood plays in helping the model to accurately predict the SalePrice.
   
        ![sns_facet_neighborhood_grlivarea](https://github.com/user-attachments/assets/bfc5aed4-c76e-401c-b895-8ccaa16bb919)
 
-3. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I will try to find ways to capture the level of "luxury" of the home, rather than just the size.
+4. 📏 Not surprisingly, **area** (measured in square feet), correlates highly with the SalePrice. The bigger the home, the more expensive it tends to be. There are several features that lend to gauging the size of the home. In my feature engineering, I will try to find ways to capture the level of "luxury" of the home, not just the size. But first, I will take a closer look at the area feature that has the highest correlation with sale price, Ground Living Area. 
 
     1. **GrLivArea** has the 3rd highest correlation with SalePrice, so I used the below **seaborn regplot** to visualize the relationship between the two. As expected, the regplot shows a positive correlation between SalePrice and GrLivArea. The line represents the best-fit linear regression model, and the shaded area is the confidence interval, which represents the level of uncertainty of the model. The confidence interval here is fairly narrow, which means that model is fairly confident. How tightly the datapoints are clustered around the regression line speaks to the strength of the relationship. The observations surround the line, however, they are not tightly clustered, so GrLivArea is in no way a perfect predictor of SalePrice. This is especially evident with the outliers that have a large GrLivArea, but do not fetch a high SalePrice.
 
     ![sns_saleprice_grlivarea](https://github.com/user-attachments/assets/3b3f1c27-8f2f-4538-9a60-1e8c42eb9dbf)
 
 
-4. 🚗 **GarageCars** and **GarageArea** have similar levels of correlation with SalePrice. This makes sense, as the the number of cars a garage can hold increases with the area of the garage. I will calculate the correlation between these two variables, as well as other garage-related features, to check for multicollinearity, as this will affect my feature selection and/or model selection.
+5. 🚗 **GarageCars** and **GarageArea** have similar levels of correlation with SalePrice. This makes sense, as the the number of cars a garage can hold increases with the area of the garage. I will calculate the correlation between these two variables, as well as other garage-related features, to check for multicollinearity, as this will affect my feature selection and/or model selection.
 
 
 ##### *Multicollinearity in Garage Features*
@@ -206,7 +206,15 @@ The above plot leads to a few interesting observations:
 
     ![sns_yearbuilt](https://github.com/user-attachments/assets/43ddddc9-3dfe-44ca-bc3f-50f6280b3f2f)
 
-- As anticipated, there is a positive correlation between year built and 
+- As anticipated, there is a positive correlation between year built and the sale price. However, the correlation does not appear to be linear. Rather, the upward trend only starts around 1950, and homes built prior to 1950 have large fluctuations in pricing. Possible explanations could be historical or renovated buildings have a higher value. 
+- Between 1950 and 2010, the correlation stabilizes into a consistent upward trend.
+- There is spike in home prices in homes built after 2010. This could be because of the cost of modern amenities, and demand for newer properties.
+- I will next use a residual plot to check if the correlation models well using a linear regression. Again, I suspect that the relationship is non-linear.
+
+    ![sns_residual](https://github.com/user-attachments/assets/55c5a82b-6f00-4c7a-b99e-102a2cc26ecc)
+
+- In the above *seaborn residplot*, the red line is the LOESS smoother, a non-parametric regression method, which means that it dynamically learns patterns from data instead of using a set function. If LOESS line is flat at 0, it would mean that residuals are randomly scattered and that there is no systematic bias. However, a curve in the LOESS line, as seen in the above plot, indicates that there is a non-linear relationship. 
+- For homes built before 1960, the model increasingly overestimates home prices, this suggests that the model is unable to account for additional factors that affect sale price, possibly costs such as depreciation or major repairs that impact older homes. Around 1960-1980, the LOESS line is the flattest, which means that the model is the most stable, although there is still bias, since it is consistently overestimates the sale price. After 1980s, the model starts to increasingly underestimate sale price. This could be driven by the fact thatdemand of newer home is much higher, and/or the cost of modern amenities in newer homes drive the sale price higher.
 
 
 # Data Preprocessing
