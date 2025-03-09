@@ -159,17 +159,18 @@ As expected, there are notable correlations between these features. Based on my 
 
 The above plot leads to a few interesting observations:
 
-1. The slope is much steeper for single family homes (1Fam) than for two-family conversion homes (2FmCon). Two-family conversion homes were originally built as one-family dwelling, but later converted into 2 dwellings. The steeper slope means that there is a stronger relationship between SalePrice and GrLivArea for 1Fam than for 2FamCon. This indicates that even if the homes are the same size, a 2FmCon correlates to a lower SalePrice than a 1Fam. This does not necessarily mean that converting a single family home into a 2 family conversion will decrease the SalePrice, because correlation does not mean causation, and there may be confounding factors, but this would be something interesting to look into for a future project.
-2. The size and the price of a two-family conversion are limited. Whereas single-family homes have a wide range of values, with outliers in all directions, two-family conversions are limited in size and price. Based on my research, two-family conversions are typically sold as 1 single building. This means that the types of single family homes that are usually converted into two-family dwellings are not too big. This makes sense, because conversions are usually conducted in high-density areas to meet housing demand. It seems unlikely that a high-end luxury home would ever be converted.
-3. The regression lines for 2famCon and Duplex are almost the same. This signals that the correlation between area and price is similar for these two building types. This is unsurprising, because 2famCon is basically a Duplex, just converted after the fact.
-4. Townhouse End Units (TownhsE), interestingly, have the steepest slope. This means that they exhibit the highest price per square feet. However, their area is limited, so we don't see any high square footages that can be observed in single family homes.
+- The slope is much steeper for single family homes (1Fam) than for two-family conversion homes (2FmCon). Two-family conversion homes were originally built as one-family dwelling, but later converted into 2 dwellings. The steeper slope means that there is a stronger relationship between SalePrice and GrLivArea for 1Fam than for 2FamCon. This indicates that even if the homes are the same size, a 2FmCon correlates to a lower SalePrice than a 1Fam. This does not necessarily mean that converting a single family home into a 2 family conversion will decrease the SalePrice, because correlation does not mean causation, and there may be confounding factors, but this would be something interesting to look into for a future project.
+- The size and the price of a two-family conversion are limited. Whereas single-family homes have a wide range of values, with outliers in all directions, two-family conversions are limited in size and price. Based on my research, two-family conversions are typically sold as 1 single building. This means that the types of single family homes that are usually converted into two-family dwellings are not too big. This makes sense, because conversions are usually conducted in high-density areas to meet housing demand. It seems unlikely that a high-end luxury home would ever be converted.
+- The regression lines for 2famCon and Duplex are almost the same. This signals that the correlation between area and price is similar for these two building types. This is unsurprising, because 2famCon is basically a Duplex, just converted after the fact.
+- Townhouse End Units (TownhsE), interestingly, have the steepest slope. This means that they exhibit the highest price per square feet. However, their area is limited, so we don't see any high square footages that can be observed in single family homes.
 
 2. **Garage Finish** I wonder if the different levels of Garage Finishes have different correlations with Sale Price. I will use the *seaborn displot* to visualize the 3 different types of Garage Finishes: Finished (Fin), RFn (Rough Finish), Unf (Unfinished), as well as "None", for no garage.
 
    ![sns_garagefinishes](https://github.com/user-attachments/assets/6e263c3b-00ad-4b11-9816-a06674c70779)
 
 
-1. The plot shows notably different distributions for the 4 garage types. The homes that don't have a garage correlate to sale prices that are much lower than those with a garage. The lines on the plot are a smooth representation of the data distribution. The peaks of each kde plot line is the value with the highest frequency, or the mode. To better compare the modes for each finish type, I will use a groupby to filter the dataset by the type of GarageFinish, then aggregate the SalePrice column, in order use a lambda function to calculate the mode for each type of garage finish. The below table shows the calculated modes:
+- The plot shows notably different distributions for the 4 garage types. The homes that don't have a garage correlate to sale prices that are much lower than those with a garage. The lines on the plot are a smooth representation of the data distribution. The peaks of each kde plot line is the value with the highest frequency, or the mode. To better compare the modes for each finish type, I will use a groupby to filter the dataset by the type of GarageFinish, then aggregate the SalePrice column, in order use a lambda function to calculate the mode for each type of garage finish. The below table shows the calculated modes:
+       
 
    | GarageFinish   |   SalePrice   |
    |:---------------|--------------:|
@@ -177,8 +178,10 @@ The above plot leads to a few interesting observations:
    | Unf            |      $135,000 |
    | RFn            |      $190,000 |
    | Fin            |      $185,000 |
+   
 
-    1. In line with the displot, the lowest mode is No Garage, and the next one is Unfinished Garage. Surprisingly, the next highest is Finished Garage, not Rough Finish. I did not expect the Rough Finish to have a higher mode than Finished. However, looking back to the displot, finished garage homes have a fatter tail towards the higher end of Sale Price. This indicates that although the mode may be lower, there is a greater chance for a home with a finished garage to correlate to a higher sale price than a home with a rough finished garage.
+- In line with the displot, the lowest mode is No Garage, and the next one is Unfinished Garage. Surprisingly, the next highest is Finished Garage, not Rough Finish. I did not expect the Rough Finish to have a higher mode than Finished. However, looking back to the displot, finished garage homes have a fatter tail towards the higher end of Sale Price. This indicates that although the mode may be lower, there is a greater chance for a home with a finished garage to correlate to a higher sale price than a home with a rough finished garage.
+
 
 
 # Data Preprocessing
