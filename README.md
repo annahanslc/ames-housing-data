@@ -112,7 +112,7 @@ The features with the 20 highest correlations to the SalePrice are:
   
     ![sns_overallqual](https://github.com/user-attachments/assets/77e32b17-63b3-4f44-b900-e1d31de64dfe)
 
-    5. The above stripplot visualizes the correlation between OverallQual and the SalePrice. It is clear that a higher overall quality corresponds to a higher sales price. However, the distribution is more sparse and varied on the high end of the spectrum. 
+    5. The above *seaborn stripplot* visualizes the correlation between OverallQual and the SalePrice. It is clear that a higher overall quality corresponds to a higher sales price. However, the distribution is more sparse and varied on the high end of the spectrum. 
 
 2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the 2 features that have the highest correlations besides Neighborhood:
 
@@ -194,6 +194,19 @@ The above plot leads to a few interesting observations:
 - Overall, there is definitely a positive correlation between a better quality kitchen and the sale price of the home.
 - It is interesting to see that an Excellent quality kitchen correlates to a very wide range of sales prices.
 - Like I mentioned earlier, the quality indicators offer a unique perspective on the home, because these can capture aspects of the home that may not be quantifiable, but can still influence the purchasing behavior or a home buyer, thereby, affecting the sale price.
+
+4. **Lot Shape** I am curious what kind of correlation exists between sale price and lot shape. My initial impression is that an irregular lot shape will correspond to a lower sale price. I will check my hypothesis by using the *seaborn boxenplot* to visualize the distribution of sale price for each level of lot irregularity. The 4 levels are: Reg = Regular, IR1 = Slightly irregular, IR2 = Moderately Irregular, IR3 = Irregular.
+
+   ![sns_lotshape](https://github.com/user-attachments/assets/2c626b2e-e192-4822-82d0-9143fb368dd8)
+
+- Based on the above plot, contrary to my prediction, the various levels of irregular lots correspond to higher sales prices than the regular lot.
+- This may be because larger lots are more likely to be irregular, and larger lots correspond to higher prices. However, this is only a theory and additional analysis would be necessary in order to draw a deeper understanding of this relationship.
+
+5. **Year Built** I would expect that in general, new homes will correspond to higher sales prices. I will check my assumption by plotting YearBuilt against SalePrice using the *seaborn lineplot*.
+
+    ![sns_yearbuilt](https://github.com/user-attachments/assets/43ddddc9-3dfe-44ca-bc3f-50f6280b3f2f)
+
+- As anticipated, there is a positive correlation between year built and 
 
 
 # Data Preprocessing
