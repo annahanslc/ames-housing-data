@@ -108,7 +108,11 @@ The features with the 20 highest correlations to the SalePrice are:
     1. A buyer of the home will likely exhibit a similar judgement call on the quality on the home, and be possibly swayed, and/or be emotionally affected, by things that are difficult to quantity using numbers or statistics.
     2. Quality features should not be overlooked due to their subjective nature, but instead, can be further expanded to get an even better understanding of the home's selling value.
     3. Since there are currently no features in the dataset to capture the quality of bathrooms, I would recommend adding BathsOverallQual to the data gathering process, and then incorporate it into this model.
-    4. Again, because dython associations does not account for the order in ordinal features, these correlations may not paint the full picture, and could even be misleading. No observations are conclusive at this point in the process. 
+    4. Again, because dython associations does not account for the order in ordinal features, these correlations may not paint the full picture, and could even be misleading. No observations are conclusive at this point in the process.
+  
+    ![sns_overallqual](https://github.com/user-attachments/assets/77e32b17-63b3-4f44-b900-e1d31de64dfe)
+
+    5. The above stripplot visualizes the correlation between OverallQual and the SalePrice. It is clear that a higher overall quality corresponds to a higher sales price. However, the distribution is more sparse and varied on the high end of the spectrum. 
 
 2. 🏡 **Neighborhood** is strongly correlated to the SalePrice. This indicates that homes in certain areas of the city tend to sell at higher or lower prices than those in other parts of the city. This also means that some of the best predictors of a home's selling price are the prices at which other homes nearby sold for. This reinforces the idea that comps (comparable sales nearby) are effective in predicting a home's selling price. To help me better understand the impact of neighborhoods on SalePrice, I will use neighborhood to subset the 2 features that have the highest correlations besides Neighborhood:
 
