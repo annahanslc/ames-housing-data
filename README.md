@@ -239,24 +239,32 @@ None of the imputation methods are ideal for this situation, but based on the ab
 ### 👷 Engineered Features:
 To capture new perspectives on the home, I created 11 engineered features and added them to my model, one by one. With each new feature, I examined the uplift in log RMSE. If the log RMSE improved, I kept the new feature, if it did not, I dropped the feature. Through this process, I have decided to keep the following 4 new engineered features:
 
-1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is a sign of affluence. According to realtor.com, the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keeping in mind that bedrooms are usually at least twice the size of a bathroom, that means the cost per SF is more than double. [Go to references](#reference-1)
-2. HouseAge = the age of the home at the time of the sale. Since the YrSold spans from 2009 to 2010, the YearBuilt is insufficient for expressing the age of the home at the time it was sold. By taking the YrSold and subtracting the YearBuilt, we can calculate the exact age of the home at the time of the sale. 
-3. TotalBaths = the total number of bathrooms on all floors, with half baths added as 0.5 bath. There are 4 features related to the number of bathrooms: FullBath, HalfBath, BsmtFullBath, and BsmtHalfBath, however, none of them represent the total number of bathrooms. Again, the number of bathrooms signal both the size of the home as well as the level of luxury. 
-4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground. According to Angi.com (formerly Angie's List), a website for finding local home service providers, real estate agents say homes with fireplaces often get offers above the asking price, and are especially popular with homebuyers in colder regions. The Iowa State University's Department of Statistics describes the Iowa's winters as being "Not as cold as it gets in Minnesota!" but still with a winter "average temperatures range in 10-30 F". [Go to references](#reference-2)
+1. **RatioBathBed** = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is a sign of affluence. According to realtor.com, the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keeping in mind that bedrooms are usually at least twice the size of a bathroom, that means the cost per SF is more than double. [Go to references](#reference-1)
+2. **HouseAge** = the age of the home at the time of the sale. Since the YrSold spans from 2009 to 2010, the YearBuilt is insufficient for expressing the age of the home at the time it was sold. By taking the YrSold and subtracting the YearBuilt, we can calculate the exact age of the home at the time of the sale. 
+3. **TotalBaths** = the total number of bathrooms on all floors, with half baths added as 0.5 bath. There are 4 features related to the number of bathrooms: FullBath, HalfBath, BsmtFullBath, and BsmtHalfBath, however, none of them represent the total number of bathrooms. Again, the number of bathrooms signal both the size of the home as well as the level of luxury. 
+4. **FireBedRatio** = the ratio of the number of fireplaces to the number of bedrooms above ground. According to Angi.com (formerly Angie's List), a website for finding local home service providers, real estate agents say homes with fireplaces often get offers above the asking price, and are especially popular with homebuyers in colder regions. The Iowa State University's Department of Statistics describes the Iowa's winters as being "Not as cold as it gets in Minnesota!" but still with a winter "average temperatures range in 10-30 F". The ratio of number of fireplaces to number of bedrooms offers another insight into the value of a home. [Go to references](#reference-2) 
 
 ### 🦄 Outliers:
-Features that exhibit an extreme right skew include: 
+Outliers can have a significant impact on data anlysis, especially on linear regression models. Because these observations are far away from the expected results, they can have a disproportionate influence on the model, increasing both model variance and bias. Outliers can also detract from selecting the best model, since the model will appear to be less accurate overall when trying to predict outliers. 
+
+From my EDA, I found that the following features exhibit an extreme right skew: 
 'LotFrontage','LotArea','MasVnrArea','BsmtFinSF1','TotalBsmtSF','1stFlrSF','GrLivArea','OpenPorchSF'.
 
-From these features, I removed observations with outliers that are more than 5 times the IQR in order to reduce noise, while maintaining as many observations as possible.
+My goal is the reduce the negative impact of outliers in my model while preserving as many observations as possible. From the above mentioned features, I removed observations with outliers that are more than **5 times the IQR** in order to reduce noise. This is a fairly generous threshold for outliers, because again, I hope to keep as many observations in my train and val datasets as I can. The remaining outliers I will address through scaling and model selection.
+
+Another way to tame these outliers would be to use a **log transformation**. The log transformation would help stabilize variance and normalize the distribution. I conducted log transformations on these features as well, but there was no uplift from my final model which uses the RobustScaler to address the skewed distribution. 
 
 ### 📐 Encoding and Scaling:
-Categorical nominal features are OneHotEncoded, categorical ordinal features are OrdinalEncoded.
-For numeric feature, I used the following scalers:
-1. StandardScaler - approximately normal distributions
-2. RobustScaler - skewed distirbutions and/or many outliers
-3. MinMax - year, to maintain the relative difference between years
+I used the **OneHotEncoder** to encode the categorical nominal features, and the **OrdinalEncoder** to encode the categorical ordinal ones. The OneHotEncoder transforms categorical variables into numbers by creating a binary for each category in each feature, where '1' means the category is applicable, and '0' means it is not. The OrdinalEncoder works similarly, but for when there is a meaningful order to the categories, and we want to encode them into numbers that correspond to that order. I used a list of dictionaries, where each dictionary contains the keys 'col' for column name and 'mapping' for the ordering instructions. 
 
+For example, most quality features are ranked on a scale from Poor to Excellent, or NA if the feature is not applicable. The full order, including all possible values would be dict_na_ex_6 = {'NA':0,'Po':1,'Fa':2,'TA':3,'Gd':4,'Ex':5}
+
+For the numeric features, I used several numeric scalers. The goal of scaling is to ensure that all features contribute equally to the model. Otherwise, features with larger ranges or numbers, can overpower the model and distract it from considering all relevant data equally. This is especially important in this dataset because there are several different units of measure that have different ranges. For example, SalePrice is in dollars, and ranges from a minimum of $34,900 to a maximum of $755,000, while YrSold is in year and ranges only from 2009 to 2010.
+
+1. **StandardScaler** - the Standard Scaler is preferred for scaling features where the distribution is approximately normal. It transforms data by subtracting the mean and dividing by the standard deviation, so the transformed feature has a mean of 0 and a stadnard deviation of 1. I used the StandardScaler to scale the LotFrontage and the GarageArea features.
+2. **RobustScaler** - the Robust Scaler uses the median as the center instead of the mean, and the interquartile range (IQR) instead of the standard deviation. This makes the scaler robust against the influence of outliers and skewed distribution. The Robust Scaler was used for a number of features, including LotArea, GrLivArea and BtotalBsmtSF.
+3. **MinMax** - the Min Max Scaler is able to scale the data to a specific range by re-positioning it around the minimum and maximum values for each feature.
+ 
 # Model Selection
 
 ### Log of Target
