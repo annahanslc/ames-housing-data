@@ -239,10 +239,10 @@ None of the imputation methods are ideal for this situation, but based on the ab
 ### 👷 Engineered Features:
 To capture new perspectives on the home, I created 11 engineered features and added them to my model, one by one. With each new feature, I examined the uplift in log RMSE. If the log RMSE improved, I kept the new feature, if it did not, I dropped the feature. Through this process, I have decided to keep the following 4 new engineered features:
 
-1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is truly a a sign of luxury. According to realtor.com the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keep in mind that bedrooms are usually at least twice the size of a bathroom. The cost per SF is more than double. [Go to references](#-reference-1)
-2. HouseAge = the age of the home at the time of the sale, as newer homes tend to cost more
-3. TotalBaths = total number of bathrooms on all floors, and half baths added as 0.5 bath, signals the size of the home
-4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground, again, another indicator of luxury
+1. RatioBathBed = the ratio of the total number of bathrooms to the number of bedrooms above ground, to capture the level of luxury of the home. The idea is that whereas having more bedrooms and bathrooms both signal a bigger home, having a higher ratio of bathrooms to bedrooms, is a sign of affluence. According to realtor.com, the cost to add a bathroom to a new home is $63,986, while the cost to add a bedroom is $62,500. Keeping in mind that bedrooms are usually at least twice the size of a bathroom, that means the cost per SF is more than double. [Go to references](#reference-1)
+2. HouseAge = the age of the home at the time of the sale. Since the YrSold spans from 2009 to 2010, the YearBuilt is insufficient for expressing the age of the home at the time it was sold. By taking the YrSold and subtracting the YearBuilt, we can calculate the exact age of the home at the time of the sale. 
+3. TotalBaths = the total number of bathrooms on all floors, with half baths added as 0.5 bath. There are 4 features related to the number of bathrooms: FullBath, HalfBath, BsmtFullBath, and BsmtHalfBath, however, none of them represent the total number of bathrooms. Again, the number of bathrooms signal both the size of the home as well as the level of luxury. 
+4. FireBedRatio = the ratio of the number of fireplaces to the number of bedrooms above ground. According to Angi.com (formerly Angie's List), a website for finding local home service providers, real estate agents say homes with fireplaces often get offers above the asking price, and are especially popular with homebuyers in colder regions. The Iowa State University's Department of Statistics describes the Iowa's winters as being "Not as cold as it gets in Minnesota!" but still with a winter "average temperatures range in 10-30 F". [Go to references](#reference-2)
 
 ### 🦄 Outliers:
 Features that exhibit an extreme right skew include: 
@@ -303,7 +303,10 @@ Lasso optimized using GridSearchCV returned the best results:
 
 ##### Reference 1
 Realtor.com: ["How Much Does it Cost to Add a Bathroom, Bedroom, or More Room to Your Home?"](https://www.realtor.com/advice/home-improvement/how-much-does-it-cost-to-add-a-bathroom/)
-
+##### Reference 2
+Angi.com: ["Does Installing a Fireplace Increase the Value of Your Home?"](https://www.angi.com/articles/do-fireplaces-make-your-home-value-hot.htm)
+##### Reference 3
+IAstate.edu: ["How cold does it get in Ames in winter?](https://www.stat.iastate.edu/life-ames-faq)
 
 
 
