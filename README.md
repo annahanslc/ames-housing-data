@@ -153,7 +153,7 @@ As expected, there are notable correlations between these features. Based on my 
 
 ### *Observations of Other Features*
 
-1. I expect that the type of building would be correlated to the SalePrice as well. The Pearson R correlation coefficient for SalePrice and BldgType is 0.19, which is not as high as some of the other features, but still notable. To visualize what kind of impact it has on SalePrice, I will use *seaborn's lmplot* to plot SalePrice against GrLivArea using BldgType as the hue.
+1. **Building Type** I expect that the type of building would be correlated to the SalePrice as well. The Pearson R correlation coefficient for SalePrice and BldgType is 0.19, which is not as high as some of the other features, but still notable. To visualize what kind of impact it has on SalePrice, I will use *seaborn's lmplot* to plot SalePrice against GrLivArea using BldgType as the hue.
 
    ![sns_price_area_bldgtype](https://github.com/user-attachments/assets/8e50e986-23da-45a4-8848-1c3de3c0afb2)
 
@@ -164,7 +164,21 @@ The above plot leads to a few interesting observations:
 3. The regression lines for 2famCon and Duplex are almost the same. This signals that the correlation between area and price is similar for these two building types. This is unsurprising, because 2famCon is basically a Duplex, just converted after the fact.
 4. Townhouse End Units (TownhsE), interestingly, have the steepest slope. This means that they exhibit the highest price per square feet. However, their area is limited, so we don't see any high square footages that can be observed in single family homes.
 
+2. **Garage Finish** I wonder if the different levels of Garage Finishes have different correlations with Sale Price. I will use the *seaborn displot* to visualize the 3 different types of Garage Finishes: Finished (Fin), RFn (Rough Finish), Unf (Unfinished), as well as "None", for no garage.
 
+   ![sns_garagefinishes](https://github.com/user-attachments/assets/6e263c3b-00ad-4b11-9816-a06674c70779)
+
+
+1. The plot shows notably different distributions for the 4 garage types. The homes that don't have a garage correlate to sale prices that are much lower than those with a garage. The lines on the plot are a smooth representation of the data distribution. The peaks of each kde plot line is the value with the highest frequency, or the mode. To better compare the modes for each finish type, I will use a groupby to filter the dataset by the type of GarageFinish, then aggregate the SalePrice column, in order use a lambda function to calculate the mode for each type of garage finish. The below table shows the calculated modes:
+
+   | GarageFinish   |   SalePrice   |
+   |:---------------|--------------:|
+   | No Garage      |       $84,500 |
+   | Unf            |      $135,000 |
+   | RFn            |      $190,000 |
+   | Fin            |      $185,000 |
+
+    1. In line with the displot, the lowest mode is No Garage, and the next one is Unfinished Garage. Surprisingly, the next highest is Finished Garage, not Rough Finish. I did not expect the Rough Finish to have a higher mode than Finished. However, looking back to the displot, finished garage homes have a fatter tail towards the higher end of Sale Price. This indicates that although the mode may be lower, there is a greater chance for a home with a finished garage to correlate to a higher sale price than a home with a rough finished garage.
 
 
 # Data Preprocessing
