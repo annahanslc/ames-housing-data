@@ -218,9 +218,6 @@ The above plot leads to a few interesting observations:
 
 ### 🪈 Pipeline Overview:
 
-<img width="997" alt="preprocessing_pipeline" src="https://github.com/user-attachments/assets/a6029479-5166-4741-a7ba-72ebc56e1ace" />
-
-
 ![preprocessing_pipline_final](https://github.com/user-attachments/assets/935a108f-339c-4cf3-882f-16fc152309b3)
 
 
@@ -313,15 +310,32 @@ The best model that resulted from the GridSearchCV on the RandomForestRegressor 
 
 4. **XGBoost with GridSearchCV** XGBoost is a newer model that utilizes gardient boosting, which is when an ensemble of decision trees are built sequentially. Each tree's goal is to correct the errors of the previous ones by minimizing a loss function, such as the mean squared error. It is also excellent at handling complex data patterns, AND it has built-in regularization by using L1 and L2 penalties on leaf weights.
 
-There are a number of hyperparameters that can be tuned in an XGBoost model. To help curb overfitting, I will adjust the range of parameters provided to the GridSearchCV to reduce the complexity of the tree. 
+There are a number of hyperparameters that can be tuned in an XGBoost model. To help curb overfitting, I will adjust the range of parameters provided to the GridSearchCV to reduce the complexity of the tree. Specifically, I will:
+
+    1. Limit the number of trees using n_estimators
+    2. Limit the depth of each tree, which helps to control complexity
+    3. Increase the min_child_weight, since larger values will prevent leaves with very few samples
+    4. Use subsampling, which is when only a fraction of samples used for each tree, by using only a fraction of the sample to grow each tree, it introduces randomess to prevent overfitting
+    5. Add alpha, which is L1 regularization
+    6. Add lambda, which is L2 regularization
+
+The best model from the GridSearchCV using the XGBoost model produced the following performance metrics:
+
+   | Metric         |     Result    |
+   |:---------------|--------------:|
+   | train RMSE     |        $8,059 |
+   | val RMSE       |       $26,683 |
+   | variance       |       $18,624 |
+   | log val RMSE   |        0.1290 |
+
+- This model yielded the highest variance, which is not ideal. However, it produced the best results in all the other metrics. Despite the larger variance and strong overfitting, it still performed better than all the other models on val. This suggests that this is the best model for predicting house prices in the real world.
 
 
 ### Best Model & Kaggle Submission
 
-Lasso optimized using GridSearchCV returned the best results:
-![image](https://github.com/user-attachments/assets/a2eae525-8441-479e-bc20-04a033e1f9ee)
+My best performing model used XGBoost with the best parameters selected through GridSearchCV. Using this model, I predicted the home prices for the test dataset from Kaggle and submitted it to the Leaderboard. My predictions obtains a final log RMSE of 0.12668, which earned me 541th place out of 3736 submissions (as of Mar 9th, 2025). 
 
-![kaggle_submission](https://github.com/user-attachments/assets/26c45416-d87f-468b-9dc4-39b20d396b42)
+![kaggle_submission_2](https://github.com/user-attachments/assets/f3f4aaa9-8142-4bfa-be86-388ee88cc3aa)
 
 
 # Model Analysis
