@@ -312,12 +312,12 @@ The best model that resulted from the GridSearchCV on the RandomForestRegressor 
 
 There are a number of hyperparameters that can be tuned in an XGBoost model. To help curb overfitting, I will adjust the range of parameters provided to the GridSearchCV to reduce the complexity of the tree. Specifically, I will:
 
-    1. Limit the number of trees using n_estimators
-    2. Limit the depth of each tree, which helps to control complexity
-    3. Increase the min_child_weight, since larger values will prevent leaves with very few samples
-    4. Use subsampling, which is when only a fraction of samples used for each tree, by using only a fraction of the sample to grow each tree, it introduces randomess to prevent overfitting
-    5. Add alpha, which is L1 regularization
-    6. Add lambda, which is L2 regularization
+1. Limit the number of trees using n_estimators
+2. Limit the depth of each tree, which helps to control complexity
+3. Increase the min_child_weight, since larger values will prevent leaves with very few samples
+4. Use subsampling, which is when only a fraction of samples used for each tree, by using only a fraction of the sample to grow each tree, it introduces randomess to prevent overfitting
+5. Add alpha, which is L1 regularization
+6. Add lambda, which is L2 regularization
 
 The best model from the GridSearchCV using the XGBoost model produced the following performance metrics:
 
@@ -340,24 +340,35 @@ My best performing model used XGBoost with the best parameters selected through 
 
 # Model Analysis
 
-### The top 10 coefficients in the final model are as follows:
+### From Lasso, RandomForest and XGBoost models, I plotted the features with the highest importance. 
 
-1. RoofMatl_ClyTile @ 0.296
-2. GrLivArea @ 0.122
-3. Neighborhood_StoneBr @ 0.089
-4. Neighborhood_Crawfor @ 0.085
-5. Neighborhood_NridgHt @ 0.082
-6. Exterior1st_BrkFace @ 0.078
-7. MSSubClass_160 @ 0.074
-8. OverallQual @ 0.061
-9. GarageCars @ 0.055
-10. Neighborhood_Somerst @ 0.048
+##### Lasso:
+![importance_lasso](https://github.com/user-attachments/assets/dcce2a9b-f164-4736-a9b5-0a8134ecdb68)
 
-![strength_coef_model](https://github.com/user-attachments/assets/65ce82e7-3280-4739-bb72-216fb7bf17d4)
+##### RandomForest:
+![importance_rf](https://github.com/user-attachments/assets/bc2151b8-78e4-4839-9a6d-bf56ae8e6878)
 
-# Summary
+##### XGBoost:
+![importance_xgb](https://github.com/user-attachments/assets/f65e8b04-81af-4ec6-ab64-9173380130da)
 
-# Next Steps
+### Observations: From the above plots, it is interesting to see which features were deemed to be important in all 3 models, and which ones only appeared in 1 or 2 models. 
+
+1. OverallQual scored first on both of the ensemble models. This is in line with the original Pearson's correlation coefficient, which also awarded the highest r value to OverallQual. It did not score as high on Lasso, but still the 8th largest coefficient.
+2. GrLivArea has the largest coefficient by far in the Lasso model, which gave it an coefficient of 0.3096, which is more than triple the the coefficient of the next feature down, Neighborhood_StoneBr with 0.09029. It ranked second on the RF model, and 9th on the XGBoost model. This reaffirms my initial observations that the size of the home highly correlated with the sale price.
+3. Some of my engineered features were found to be important by the models. HouseAge is the 4th most important in the RF model, and TotalBaths 8th. The XGB model also valued TotalBaths at 8th most importance, but it deemed FireBedRatio to be even more telling! FireBedRatio came in as the 7th most important feature according to XGBoost.
+4. The Lasso model seemed to emphasize the various neighborhoods more, with the 2nd, 4th and 5th features all being specific neighborhoods. This makes sense though, as the initial correlation also showed Neighborhood having the second highest correlation coefficient to SalePrice. To the contrary, the ensemble models did not assign as high of an importance to any of the neighborhood, they are further down the list.
+
+
+# Conclusion & Next Steps
+
+I believe that my XGBoost model will serve the Ames City Assesor well in their job of valuing homes in Ames City at their market value. However, there is still plenty of room to improve the model. My next steps include:
+
+1. Obtain more data, especially more recent data, as this is key to keeping the model up to date with current housing trends.
+2. Capture more quality-related data, such as the quality of the bathrooms, ranked by an observer on a scale of 1 to 10.
+3. Obtain and analyze pictures of the home. Exterior visuals should be the easiest to obtain by using services such as Google Maps, then, use multimodal LLM to analyze pictures for patterns that correlate to the SalePrice. For example, a street where more cars park on the street could correspond to lower sales prices than a different street where most residents parks in a driveway, as parking on the street could indicate lower income areas, and/or higher density living. 
+4. Include additional home features that may indicate investment in the home, such as electric car chargers and solar panels.
+5. Incorporate other estimators to boost accuracy of my model. Online estimators such as Zillow's Zestimate or Redfin, offer their own models to help the public estimate home prices. Similar to the concept of gradient boosting, we can utilize these publically available estimates to improve our own estimates for Ames City. However, before doing this, I will need to research both websites to ensure using their estimates in our model does not violate any of their policies.
+
 
 # References
 
