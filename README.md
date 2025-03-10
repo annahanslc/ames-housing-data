@@ -307,9 +307,13 @@ Lasso optimized using GridSearchCV returned the best results:
 
 ![strength_coef_model](https://github.com/user-attachments/assets/65ce82e7-3280-4739-bb72-216fb7bf17d4)
 
+# Summary
+
+# Next Steps
+
 # References
 
-##### Reference 1
+##### Reference 1 : 
 Realtor.com: ["How Much Does it Cost to Add a Bathroom, Bedroom, or More Room to Your Home?"](https://www.realtor.com/advice/home-improvement/how-much-does-it-cost-to-add-a-bathroom/)
 ##### Reference 2
 Angi.com: ["Does Installing a Fireplace Increase the Value of Your Home?"](https://www.angi.com/articles/do-fireplaces-make-your-home-value-hot.htm)
@@ -318,6 +322,4 @@ IAstate.edu: ["How cold does it get in Ames in winter?](https://www.stat.iastate
 
 
 
-# Summary
 
-# Next Steps
