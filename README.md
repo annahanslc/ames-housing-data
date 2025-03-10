@@ -263,19 +263,34 @@ For the numeric features, I used several numeric scalers. The goal of scaling is
 
 1. **StandardScaler** - the Standard Scaler is preferred for scaling features where the distribution is approximately normal. It transforms data by subtracting the mean and dividing by the standard deviation, so the transformed feature has a mean of 0 and a stadnard deviation of 1. I used the StandardScaler to scale the LotFrontage and the GarageArea features.
 2. **RobustScaler** - the Robust Scaler uses the median as the center instead of the mean, and the interquartile range (IQR) instead of the standard deviation. This makes the scaler robust against the influence of outliers and skewed distribution. The Robust Scaler was used for a number of features, including LotArea, GrLivArea and BtotalBsmtSF.
-3. **MinMax** - the Min Max Scaler is able to scale the data to a specific range by re-positioning it around the minimum and maximum values for each feature.
+3. **MinMax** - the Min Max Scaler is able to scale the data to a specific range by re-positioning it around the minimum and maximum values for each feature. I 
  
 # Model Selection
 
 ### Log of Target
-The target, SalePrice, has a strong right skew (left). 
-To improve model performance, I took the log of the SalePrice to normalize the distribution (right).
+The target, SalePrice, has a strong right skew (left). To improve model performance, I took the log of the SalePrice to normalize the distribution (right). Transforming the target helps to stabilize the variance and reduce heteroscedasticity. Heteroscedasticity is the observation that errors are inconsistent over observations. Taking the log of the SalePrice also helps to linearize any exponential relationships between variables, making it more suitable for linear models. 
 
 ![SalePrice_distribution](https://github.com/user-attachments/assets/abf9761e-9d05-4f64-a480-3a812d7ad7bc) ![SalePrice_log_distribution](https://github.com/user-attachments/assets/06fac3a4-994b-4d72-a7d1-a76941cca399)
 
-### LinearRegression
-- Linear Regression - best log RMSE @ 0.34314
-- Lasso - best log val RMSE @ 0.13223
+I explored several regression models in search of the best model for this dataset. 
+
+1. **Linear Regression** Using the LinearRegression function provided by sklearn's linear_model library, I generated a linear regression model to predict the SalePrice. The linear regression model describes the relationship between a dependent variable, y, and one or more independent variables, X. In this dataset, y is the SalePrice and the features are the independent variables, X's. The resulting model yielded the following performance:
+
+   | Metric         |     Result    |
+   |:---------------|--------------:|
+   | train RMSE     |       $21,016 |
+   | val RMSE       |       $30,771 |
+   | variance       |        $9,755 |
+   | log val RMSE   |        0.1975 |
+
+- The above metrics indicate that the model performed much better on train than on val. The variance of $9,755 demonstrates that the model is overfitted. The log val RMSE is not bad, but not where I want to be. This linear regression model is my simpliest model, and will act as my baseline. I will next try more complex models and compare their performances against my baseline.
+
+2. **Linear Regression with Lasso and GridSearchCV** scikit-learn's Lasso function, also from the linear_model library, helps to prevent overfitting by conducting regularization. Regularization is the technique used to prevert overfitting by penalizing large coefficient values, so it discourages the model from fitting the training data too closely. Lasso uses L1 Regularization, which utilizes the absolute values of the coefficients to calculate the penalty. Lasso can be tuned by adjusting its regularization strength, alpha. I will use GridSearchCV to run the model using different alphas, and find the parameters that generates the best model.
+
+GridSearchCV 
+
+3. 
+
 
 ### Ensemble with GridSearchCV & RandomizedSearchCV
 - RandomForest - best log val RMSE @ 0.21229
