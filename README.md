@@ -41,8 +41,7 @@ The below outlines the steps I will take in this project.
 3. [Data Preprocessing](#-data-preprocessing)
 4. [Model Selection](#-model-selection)
 5. [Model Analysis](#-model-analysis)
-6. [Summary](#-summary)
-7. [Next Steps](#-next-steps)
+6. [Conclusion & Next Steps](#conclusion--next-steps)
 
 
 # About the Dataset
