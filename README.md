@@ -28,7 +28,7 @@ The below outlines the steps I will take in this project.
     2. Feature Engineering Custom Transformer
     3. Imputers using various strategies
     4. Encoders for OneHotEncoding and OrdinalEncoding
-    5. Scalers for scaling various types of numeric features.
+    5. Scaler for scaling numeric features.
 4. Fit various models and calculate the log RMSE to determine the best model for this project
 5. Use GridSearchCV and RandomizedSearchCV to fine tune the model's hyperparameters.
 6. Once the final model is selected, analyze the model to understand what features are the strongest drivers.
@@ -38,9 +38,6 @@ The below outlines the steps I will take in this project.
 # Directory
 
 1. [About the Dataset](#-about-the-dataset)
-    1. Features
-    2. Feature Correlations
-    3. Observations
 3. [Data Preprocessing](#-data-preprocessing)
 4. [Model Selection](#-model-selection)
 5. [Model Analysis](#-model-analysis)
@@ -224,6 +221,9 @@ The above plot leads to a few interesting observations:
 <img width="997" alt="preprocessing_pipeline" src="https://github.com/user-attachments/assets/a6029479-5166-4741-a7ba-72ebc56e1ace" />
 
 
+![preprocessing_pipline_final](https://github.com/user-attachments/assets/935a108f-339c-4cf3-882f-16fc152309b3)
+
+
 ### 🚫 Treatment of Nulls:
 The training dataset contains missing values in 19 features. Incoming new data is highly likely to also contain missing values in these features, but also in features that do not have nulls in the training dataset. Therefore, I have equipped all features with an imputation method for nulls. 
 
@@ -259,11 +259,7 @@ I used the **OneHotEncoder** to encode the categorical nominal features, and the
 
 For example, most quality features are ranked on a scale from Poor to Excellent, or NA if the feature is not applicable. The full order, including all possible values would be dict_na_ex_6 = {'NA':0,'Po':1,'Fa':2,'TA':3,'Gd':4,'Ex':5}
 
-For the numeric features, I used several numeric scalers. The goal of scaling is to ensure that all features contribute equally to the model. Otherwise, features with larger ranges or numbers, can overpower the model and distract it from considering all relevant data equally. This is especially important in this dataset because there are several different units of measure that have different ranges. For example, SalePrice is in dollars, and ranges from a minimum of $34,900 to a maximum of $755,000, while YrSold is in year and ranges only from 2009 to 2010.
-
-1. **StandardScaler** - the Standard Scaler is preferred for scaling features where the distribution is approximately normal. It transforms data by subtracting the mean and dividing by the standard deviation, so the transformed feature has a mean of 0 and a stadnard deviation of 1. I used the StandardScaler to scale the LotFrontage and the GarageArea features.
-2. **RobustScaler** - the Robust Scaler uses the median as the center instead of the mean, and the interquartile range (IQR) instead of the standard deviation. This makes the scaler robust against the influence of outliers and skewed distribution. The Robust Scaler was used for a number of features, including LotArea, GrLivArea and BtotalBsmtSF.
-3. **MinMax** - the Min Max Scaler is able to scale the data to a specific range by re-positioning it around the minimum and maximum values for each feature. I 
+For the numeric features, I used the **StandardScaler**. The goal of scaling is to ensure that all features contribute equally to the model. Otherwise, features with larger ranges or numbers, can overpower the model and distract it from considering all relevant data equally. This is especially important in this dataset because there are several different units of measure that have different ranges. For example, SalePrice is in dollars, and ranges from a minimum of $34,900 to a maximum of $755,000, while YrSold is in year and ranges only from 2009 to 2010.
  
 # Model Selection
 
@@ -274,7 +270,7 @@ The target, SalePrice, has a strong right skew (left). To improve model performa
 
 I explored several regression models in search of the best model for this dataset. 
 
-1. **Linear Regression** Using the LinearRegression function provided by sklearn's linear_model library, I generated a linear regression model to predict the SalePrice. The linear regression model describes the relationship between a dependent variable, y, and one or more independent variables, X. In this dataset, y is the SalePrice and the features are the independent variables, X's. The resulting model yielded the following performance:
+1. **Linear Regression** Using the LinearRegression function provided by scikit-learn's linear_model library, I generated a linear regression model to predict the SalePrice. The linear regression model describes the relationship between a dependent variable, y, and one or more independent variables, X. In this dataset, y is the SalePrice and the features are the independent variables, X's. The resulting model yielded the following performance:
 
    | Metric         |     Result    |
    |:---------------|--------------:|
@@ -287,14 +283,37 @@ I explored several regression models in search of the best model for this datase
 
 2. **Linear Regression with Lasso and GridSearchCV** scikit-learn's Lasso function, also from the linear_model library, helps to prevent overfitting by conducting regularization. Regularization is the technique used to prevert overfitting by penalizing large coefficient values, so it discourages the model from fitting the training data too closely. Lasso uses L1 Regularization, which utilizes the absolute values of the coefficients to calculate the penalty. Lasso can be tuned by adjusting its regularization strength, alpha. I will use GridSearchCV to run the model using different alphas, and find the parameters that generates the best model.
 
-GridSearchCV 
+GridSearchCV is a technique from scikit-learn that systematically searches for the best combination of hyperparameters by trying and evaluating all possible combinations. It also use cross-validation to determine the best performance. Cross-validation is when a dataset is split into train and test data in multiple ways to avoid modeling or testing off of a single "lucky draw". This can improve the relability of the performance metric of the model. 
 
-3. 
+The best model resulting from the Lasso regression using GridSearchCV yielded the following metrics:
 
+   | Metric         |     Result    |
+   |:---------------|--------------:|
+   | train RMSE     |       $26,583 |
+   | val RMSE       |       $27,675 |
+   | variance       |        $1,092 |
+   | log val RMSE   |        0.1322 |
 
-### Ensemble with GridSearchCV & RandomizedSearchCV
-- RandomForest - best log val RMSE @ 0.21229
-- XGBoost - best log val RMSE @ 0.16118
+- The Lasso model performed much better in terms of the val RMSE, variance, and log RMSE. It performed more poorly on train RMSE, but that is not much of a concern, since our business goal is to find the best model to predict future sale price, not the train dataset. I am especially happy with the lower variance. This lends confidence to the model in its ability to accurately predict real data in the future. The Lasso has successfully surpassed the baseline model and is a contender for the final model. 
+
+3. **RandomForestRegressor with GridSearchCV** RandomForest is an ensemble model that utilizes multiple decision trees to improve overall accuracy and prevent overfitting. It does this by building many decision trees, and then averaging their predictions to produce a final output. This can help capture complex patterns and relationships in between features. The RandomForest model is robust against outliers, and is well suited for dataset with a large number of features.
+
+Instead of Regularization, RandomForestRegressor uses hyperparameters such as max_depth, min_samples_split, min_samples_leaf and max_features to help control tree complexity, which helps to avoid overfitting. 
+
+The best model that resulted from the GridSearchCV on the RandomForestRegressor yielded the following results:
+
+   | Metric         |     Result    |
+   |:---------------|--------------:|
+   | train RMSE     |       $11,433 |
+   | val RMSE       |       $29,238 |
+   | variance       |       $17,805 |
+   | log val RMSE   |        0.1434 |
+
+- The variance on the RandomForestRegressor model is the highest so far, this signals that the model is very overfitted. The val RMSE is smaller than the linear regression model, but higher than Lasso. The log val RMSE is also higher. Comparatively, the Lasso model performed better, and is still the best model thus far. 
+
+4. **XGBoost with GridSearchCV** XGBoost is a newer model that utilizes gardient boosting, which is when an ensemble of decision trees are built sequentially. Each tree's goal is to correct the errors of the previous ones by minimizing a loss function, such as the mean squared error. It is also excellent at handling complex data patterns, AND it has built-in regularization by using L1 and L2 penalties on leaf weights.
+
+There are a number of hyperparameters that can be tuned in an XGBoost model. To help curb overfitting, I will adjust the range of parameters provided to the GridSearchCV to reduce the complexity of the tree. 
 
 
 ### Best Model & Kaggle Submission
